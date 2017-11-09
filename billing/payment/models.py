@@ -47,11 +47,10 @@ class PaymentGroup(models.Model):
 class ProductGroup(PaymentGroup):
 	id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False, verbose_name=_('identifier'))
 	product = models.ForeignKey(Product, verbose_name='Related product')
-	scanners = models.ManyToManyField(Scanner, verbose_name='Related scanner')
+	# scanners = models.ManyToManyField(Scanner, verbose_name='Related scanner')
 
 	def __str__(self):
-		scanners = [str(sc) for sc in self.scanners.all()]
-		return str(self.product) + ' - ' + str(scanners)
+		return str(self.product)
 
 class AccountConnectorGroup(PaymentGroup):
 	id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False, verbose_name=_('identifier'))
@@ -65,3 +64,4 @@ class PaymentList(models.Model):
 	total_price   = models.DecimalField(max_digits=6, decimal_places=2, verbose_name=_('Total price'))
 	product_group = models.ForeignKey(ProductGroup, verbose_name='product group')
 	account_group = models.ForeignKey(AccountConnectorGroup, verbose_name='account group')
+	scanner       = models.ForeignKey(Scanner, blank=True, null=True, verbose_name='scanner')
